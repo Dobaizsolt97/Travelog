@@ -8,7 +8,8 @@ const bodyParser = require("body-parser");
 
 //importing the routes
 const authRoutes = require("./routes/auth");
-
+const categoryRoutes = require("./routes/category");
+const postRoutes = require("./routes/post");
 // internal imports
 require("dotenv").config();
 // initializing the application
@@ -43,3 +44,5 @@ app.get("/", (req, res) => {
 
 //routes setup
 app.use("/api", authRoutes);
+app.use("/api", categoryRoutes);
+app.use("/api", postRoutes);

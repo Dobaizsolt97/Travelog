@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema(
     travels: { type: Array, default: [] },
     salt: { type: String },
     hashed_password: { type: String, required: true },
+    role: { type: Number, required: true, default: 0 },
   },
 
   { timestamps: true }

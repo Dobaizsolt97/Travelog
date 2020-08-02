@@ -2,6 +2,7 @@ const Post = require("../models/post");
 const formidable = require("formidable");
 const _ = require("lodash");
 const fs = require("fs");
+
 exports.getPosts = (req, res) => {
   Post.find()
     .select("-photo")
@@ -43,4 +44,31 @@ exports.createPost = (req, res) => {
       res.json(newPost);
     });
   });
+};
+
+exports.postById = (req, res, next, id) => {
+  Post.findById(id)
+
+    .populate("category", "name")
+    .populate("traveler", "name")
+    .exec((err, foundPost) => {
+      if (err) {
+        res.status(400).json({ error: "Could not find the post" });
+      }
+      req.post = foundPost;
+      next();
+    });
+};
+
+exports.getSpecificPost = (req, res) => {
+  req.post.photo = undefined;
+  res.json(req.post);
+};
+
+exports.getPhoto = (req, res, next) => {
+  if (req.post.photo.data) {
+    res.set("Content-Type", req.post.photo.contentType);
+    return res.send(req.post.photo.data);
+  }
+  next();
 };
